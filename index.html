@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="menu">
+        <div class="cardsNumber">
+            <form action="#" >
+                <div>Выберите количество карточек:</div>
+                <div>
+                    <input type="radio" name="cardsNumber" value="8" id="eight" checked>
+                    <label for="eight">8</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="cardsNumber" value="12" id="twelve" >
+                    <label for="twelve">12</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="cardsNumber" value="16" id="sixteen">
+                    <label for="sixteen">16</label>
+                </div>
+            </form>
+        </div>
+        <div>
+            <input type="button" id="reset" value="Начать заново">
+        </div>
+    </div>
+
+    <section class="memory-game">
+        <div class="memory-card" data-framework="asteroid">
+            <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card" data-framework="asteroid">
+            <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card" data-framework="astronaut">
+            <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card" data-framework="astronaut">
+            <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card" data-framework="earth">
+            <img class="front-face" src="img/earth.svg" alt="Earth" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card" data-framework="earth">
+            <img class="front-face" src="img/earth.svg" alt="Earth" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card" data-framework="moon">
+            <img class="front-face" src="img/moon.svg" alt="Moon" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card" data-framework="moon">
+            <img class="front-face" src="img/moon.svg" alt="Moon" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card add addTo12" data-framework="moon-rover">
+            <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card add addTo12" data-framework="moon-rover">
+            <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card add addTo12" data-framework="planet">
+            <img class="front-face" src="img/planet.svg" alt="Planet" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card add addTo12" data-framework="planet">
+            <img class="front-face" src="img/planet.svg" alt="Planet" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card add addTo16" data-framework="spaceship">
+            <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card add addTo16" data-framework="spaceship" >
+            <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+        <div class="memory-card add addTo16" data-framework="star">
+            <img class="front-face" src="img/star.svg" alt="Star" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+        <div class="memory-card add addTo16" data-framework="star" >
+            <img class="front-face" src="img/star.svg" alt="Star" />
+            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+        </div>
+
+    </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
