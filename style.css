@@ -7,13 +7,13 @@
 .wrap {
     height: 150vh;
     display: flex;
-    background: #060AB2;
+    background: #1a2e4c;
     color: #fff;
 }
 
 .memory-game {
-    width: 540px;
-    height: 540px;
+    width: 600px;
+    height: 600px;
     margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
@@ -24,7 +24,7 @@
 
 .memory-card {
     width: calc(25% - 10px);
-    height: calc(33.333% - 10px);
+    height: calc(25% - 10px);
     margin: 5px;
     position: relative;
     transform: scale(1);
@@ -49,8 +49,13 @@
     padding: 20px;
     position: absolute;
     border-radius: 5px;
-    background: #1C7CCC;
+    background: #77212e;
     backface-visibility: hidden;
+    box-shadow: 2px 3px 7px 2px #19103e,
+                inset 0px 0px 5px 0px #641b26;
+}
+.back-face:active{
+    background: #8e2736;
 }
 
 .front-face {
@@ -60,9 +65,50 @@
 .cardsNumber{
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    margin-bottom: 20px;
 }
 
 .add{
     display: none;
+}
+
+#reset{
+    display: none;
+}
+
+.resetDiv {
+    height: 40px;
+    width: 40px;
+    background-color: #77212e;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+
+.resetDiv:hover{
+    background-color: #8e2736;
+}
+.resetDiv:active{
+    background-color: #57aabe;
+}
+
+.icon{
+    height: 35px;
+    width: 35px;
+    padding-top: 7px;
+    padding-left: 4px;
+    padding-bottom: 3px;
+}
+
+.history{
+    color: #bfbfbd;
+    margin-bottom: 20px;
+}
+
+.divList{
+    margin-left: 18px;
+}
+
+.menu{
+    padding: 20px;
 }
