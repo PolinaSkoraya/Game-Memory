@@ -1,11 +1,59 @@
 const cards = document.querySelectorAll('.memory-card');
 const inputsNumberCards  = document.getElementsByName('cardsNumber');
 let history =[];
+let cardsOrder = [];
+let lengthCards = 0;
+let flippedCardsName = [];
 
-if(localStorage.getItem('historyGame') != undefined){
+const additional  = document.querySelectorAll('.add');
+const addTo12  = document.querySelectorAll('.addTo12');
+const addTo16  = document.querySelectorAll('.addTo16');
+
+if(localStorage.getItem('historyGame') !== 'undefined' && localStorage.getItem('historyGame') !== null){
     history = JSON.parse(localStorage.getItem('historyGame'));
     getHistory();
 }
+if(localStorage.getItem('numberOfCards') !== 'undefined'){
+    lengthCards = Number(localStorage.getItem('numberOfCards'));
+    if(localStorage.getItem('numberOfCards') === '8'){
+        additional.forEach( elem => {
+            elem.classList.add('add');
+            elem.classList.add('add');
+        })
+    }
+    else if(localStorage.getItem('numberOfCards') === '12'){
+        addTo12.forEach( elem => {
+            elem.classList.remove('add');
+            elem.classList.remove('add');
+        })
+        addTo16.forEach( elem => {
+            elem.classList.add('add');
+            elem.classList.add('add');
+        })
+    }
+    else if(localStorage.getItem('numberOfCards') === '16'){
+        additional.forEach( elem => {
+            elem.classList.remove('add');
+            elem.classList.remove('add');
+        })
+    }
+    inputsNumberCards.forEach(elem=> {
+        if(elem.value == localStorage.getItem('numberOfCards')){
+            elem.checked = 'checked';
+        }
+    })
+}
+
+if(localStorage.getItem('cardsOrder') != undefined){
+    cardsOrder = JSON.parse(localStorage.getItem('cardsOrder'));
+    for(let i=0; i<lengthCards; i++){
+        cards[i].style.order = cardsOrder[i];
+    }
+}else{
+    shuffle();
+}
+
+
 
 class Pair {
     constructor() {
@@ -13,7 +61,6 @@ class Pair {
         this.secondCardHistory = '';
     }
 }
-let numberOfClicks = 0;
 
 let hasFlippedCard = false;
 let lockBoard = false;
@@ -21,7 +68,6 @@ let firstCard, secondCard;
 let first, second;
 
 const flipCard = e => {
-    numberOfClicks++;
     if (lockBoard) return;
 
     const target = e.target.parentElement;
@@ -46,9 +92,7 @@ function initHistory(){
     pair.firstCardHistory = first.dataset.name;
     pair.secondCardHistory = second.dataset.name;
     history.push(pair);
-    localStorage.setItem('hi', "yes");
     localStorage.setItem('historyGame', JSON.stringify(history));
-    console.log(localStorage);
 }
 
 function checkForMatch() {
@@ -59,7 +103,13 @@ function checkForMatch() {
 function disableCards() {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
+
+    flippedCardsName.push(firstCard.dataset.name);
+    localStorage.setItem('flippedCardsName', JSON.stringify(flippedCardsName));
+
     resetBoard();
+
+    checkEnd();
 }
 
 function unflipCards() {
@@ -70,7 +120,7 @@ function unflipCards() {
         secondCard.classList.remove('flip');
 
         resetBoard();
-    }, 1000);
+    }, 1500);
 }
 
 function resetBoard() {
@@ -79,22 +129,29 @@ function resetBoard() {
 }
 
 function shuffle() {
-    cards.forEach(card => {
-        let randomIndex = Math.floor(Math.random() * cards.length);
-        card.style.order = randomIndex;
-    });
+    for(let i=0; i<lengthCards; i++){
+        let randomIndex = Math.floor(Math.random() * lengthCards);
+        cards[i].style.order = randomIndex;
+        cardsOrder.push(randomIndex);
+    }
+    // cards.forEach(card => {
+    //     let randomIndex = Math.floor(Math.random() * lengthCards);
+    //     card.style.order = randomIndex;
+    //     cardsOrder.push(randomIndex);
+    // });
+
+    localStorage.setItem('cardsOrder', JSON.stringify(cardsOrder));
 };
-shuffle();
+
 
 
 cards.forEach(card => card.addEventListener('click', flipCard));
 
-const additional  = document.querySelectorAll('.add');
-const addTo12  = document.querySelectorAll('.addTo12');
-const addTo16  = document.querySelectorAll('.addTo16');
 
 const changeNumberCards = e => {
     const target = e.target;
+    lengthCards = target.value;
+    localStorage.setItem('numberOfCards', target.value);
     reset();
     if(target.value == 8){
         additional.forEach( elem => {
@@ -123,13 +180,19 @@ const changeNumberCards = e => {
 inputsNumberCards.forEach(input => input.addEventListener('change', changeNumberCards));
 
 function reset(){
+    cardsOrder.length = 0;
+    localStorage.setItem('cardsOrder', undefined);
+
     const fliped = document.querySelectorAll('.flip');
     fliped.forEach(elem => elem.classList.remove('flip'));
     resetBoard();
     cards.forEach(card => card.addEventListener('click', flipCard));
     setTimeout(shuffle, 500);
     clearHistory();
-    localStorage.setItem('historyGame', '');
+    localStorage.setItem('historyGame', undefined);
+
+    flippedCardsName.length = 0;
+    localStorage.setItem('flippedCardsName', undefined);
 }
 
 document.querySelector('#reset').addEventListener('click', reset);
@@ -162,3 +225,20 @@ const showHistory = () => {
 }
 
 document.querySelector('#chbHistory').addEventListener('change', showHistory);
+
+function checkEnd() {
+    if(flippedCardsName.length * 2 === Number(lengthCards)) {
+        setTimeout(()=>{reset()}, 1500);
+    }
+}
+
+if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getItem('flippedCardsName') !== null){
+    flippedCardsName = JSON.parse(localStorage.getItem('flippedCardsName'));
+    flippedCardsName.forEach(elem =>{
+        let flipped = document.querySelectorAll(`[data-name = ${elem}]`);
+        flipped.forEach(card=>{
+            card.removeEventListener('click', flipCard);
+            card.classList.add('flip');
+        })
+    })
+}
