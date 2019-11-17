@@ -1,9 +1,13 @@
 const cards = document.querySelectorAll('.memory-card');
 const inputsNumberCards  = document.getElementsByName('cardsNumber');
-let history =[];
+let lengthCards = '8';
+let historyGame =[];
 let cardsOrder = [];
-let lengthCards = 0;
 let flippedCardsName = [];
+let numberOfClicks = 0;
+
+let historyFirstG = [];
+let historySecondG = [];
 
 const additional  = document.querySelectorAll('.add');
 const addTo12  = document.querySelectorAll('.addTo12');
@@ -13,30 +17,10 @@ if(localStorage.getItem('historyGame') !== 'undefined' && localStorage.getItem('
     history = JSON.parse(localStorage.getItem('historyGame'));
     getHistory();
 }
-if(localStorage.getItem('numberOfCards') !== 'undefined'){
+
+if(localStorage.getItem('numberOfCards') !== 'undefined' && localStorage.getItem('numberOfCards') !== null){
     lengthCards = Number(localStorage.getItem('numberOfCards'));
-    if(localStorage.getItem('numberOfCards') === '8'){
-        additional.forEach( elem => {
-            elem.classList.add('add');
-            elem.classList.add('add');
-        })
-    }
-    else if(localStorage.getItem('numberOfCards') === '12'){
-        addTo12.forEach( elem => {
-            elem.classList.remove('add');
-            elem.classList.remove('add');
-        })
-        addTo16.forEach( elem => {
-            elem.classList.add('add');
-            elem.classList.add('add');
-        })
-    }
-    else if(localStorage.getItem('numberOfCards') === '16'){
-        additional.forEach( elem => {
-            elem.classList.remove('add');
-            elem.classList.remove('add');
-        })
-    }
+    addCards(localStorage.getItem('numberOfCards'));
     inputsNumberCards.forEach(elem=> {
         if(elem.value == localStorage.getItem('numberOfCards')){
             elem.checked = 'checked';
@@ -44,7 +28,7 @@ if(localStorage.getItem('numberOfCards') !== 'undefined'){
     })
 }
 
-if(localStorage.getItem('cardsOrder') != undefined){
+if(localStorage.getItem('cardsOrder') !== 'undefined' && localStorage.getItem('cardsOrder') !== null){
     cardsOrder = JSON.parse(localStorage.getItem('cardsOrder'));
     for(let i=0; i<lengthCards; i++){
         cards[i].style.order = cardsOrder[i];
@@ -52,7 +36,6 @@ if(localStorage.getItem('cardsOrder') != undefined){
 }else{
     shuffle();
 }
-
 
 
 class Pair {
@@ -81,18 +64,51 @@ const flipCard = e => {
     }else{
         secondCard = target;
         second = target;
-        initHistory();
+
         checkForMatch();
-        getHistory();
+        if(document.querySelector('#chbGamers').checked !== true){
+            initHistory(historyGame);
+            getHistory();
+        }
+    }
+
+    if(document.querySelector('#chbGamers').checked){
+        numberOfClicks++;
+        if(numberOfClicks % 2 === 0){
+            changeGamer();
+            //initHistory
+            let pair = new Pair();
+            pair.firstCardHistory = first.dataset.name;
+            pair.secondCardHistory = second.dataset.name;
+            historyFirstG.push(pair);
+            localStorage.setItem('historyGamer1', JSON.stringify(history));
+
+        }else{
+            let pair = new Pair();
+            pair.firstCardHistory = first.dataset.name;
+            pair.secondCardHistory = second.dataset.name;
+            historySecondG.push(pair);
+            localStorage.setItem('historyGamer2', JSON.stringify(history));
+
+            let ol = document.querySelector('#listHistorySG');
+            while(ol.firstChild){
+                ol.removeChild(ol.firstChild);
+            }
+            historySecondG.forEach(elem=>{
+                let li= document.createElement('li');
+                li.innerHTML = `${elem.firstCardHistory} - ${elem.secondCardHistory}`;
+                ol.append(li);
+            })
+        }
     }
 }
 
-function initHistory(){
+function initHistory(history){
     let pair = new Pair();
     pair.firstCardHistory = first.dataset.name;
     pair.secondCardHistory = second.dataset.name;
     history.push(pair);
-    localStorage.setItem('historyGame', JSON.stringify(history));
+    localStorage.setItem(`${history}`, JSON.stringify(history));
 }
 
 function checkForMatch() {
@@ -108,7 +124,6 @@ function disableCards() {
     localStorage.setItem('flippedCardsName', JSON.stringify(flippedCardsName));
 
     resetBoard();
-
     checkEnd();
 }
 
@@ -147,19 +162,14 @@ function shuffle() {
 
 cards.forEach(card => card.addEventListener('click', flipCard));
 
-
-const changeNumberCards = e => {
-    const target = e.target;
-    lengthCards = target.value;
-    localStorage.setItem('numberOfCards', target.value);
-    reset();
-    if(target.value == 8){
+function addCards(value){
+    if(value === '8'){
         additional.forEach( elem => {
             elem.classList.add('add');
             elem.classList.add('add');
         })
     }
-    else if(target.value == 12){
+    else if(value === '12'){
         addTo12.forEach( elem => {
             elem.classList.remove('add');
             elem.classList.remove('add');
@@ -169,12 +179,20 @@ const changeNumberCards = e => {
             elem.classList.add('add');
         })
     }
-    else if(target.value == 16){
-       additional.forEach( elem => {
-           elem.classList.remove('add');
-           elem.classList.remove('add');
-       })
+    else if(value === '16'){
+        additional.forEach( elem => {
+            elem.classList.remove('add');
+            elem.classList.remove('add');
+        })
     }
+}
+
+const changeNumberCards = e => {
+    const target = e.target;
+    lengthCards = target.value;
+    localStorage.setItem('numberOfCards', target.value);
+    reset();
+    addCards(target.value);
 }
 
 inputsNumberCards.forEach(input => input.addEventListener('change', changeNumberCards));
@@ -193,6 +211,8 @@ function reset(){
 
     flippedCardsName.length = 0;
     localStorage.setItem('flippedCardsName', undefined);
+
+    numberOfClicks = 0;
 }
 
 document.querySelector('#reset').addEventListener('click', reset);
@@ -202,7 +222,7 @@ function getHistory(){
     while(ol.firstChild){
         ol.removeChild(ol.firstChild);
     }
-    history.forEach(elem=>{
+    historyGame.forEach(elem=>{
         let li= document.createElement('li');
         li.innerHTML = `${elem.firstCardHistory} - ${elem.secondCardHistory}`;
         ol.append(li);
@@ -211,7 +231,7 @@ function getHistory(){
 }
 
 function clearHistory(){
-    history.length = 0;
+    historyGame.length = 0;
 
     let ol = document.querySelector('#listHistory');
     while(ol.firstChild){
@@ -219,12 +239,12 @@ function clearHistory(){
     }
 }
 
-const showHistory = () => {
+const showDivHistory = () => {
     let ol = document.querySelector('#listHistory');
     ol.classList.toggle('add');
 }
 
-document.querySelector('#chbHistory').addEventListener('change', showHistory);
+document.querySelector('#chbHistory').addEventListener('change', showDivHistory);
 
 function checkEnd() {
     if(flippedCardsName.length * 2 === Number(lengthCards)) {
@@ -242,3 +262,18 @@ if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getI
         })
     })
 }
+
+function changeGamer(){
+    const firstGamer = document.querySelector('.firstGamer');
+    const secondGamer = document.querySelector('.secondGamer');
+    firstGamer.classList.toggle('currentGamer');
+    secondGamer.classList.toggle('currentGamer');
+}
+
+function twoGamers(){
+    if(document.querySelector('#chbGamers').checked){
+        reset();
+    }
+}
+
+document.querySelector('#chbGamers').addEventListener('change', twoGamers);

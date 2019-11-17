@@ -112,3 +112,17 @@
 .menu{
     padding: 20px;
 }
+
+.currentGamer{
+    background-color: #8e2736;
+}
+
+.gamers{
+    display: flex;
+}
+
+.gamer{
+    width: 120px;
+    padding: 10px;
+    margin: 10px;
+}

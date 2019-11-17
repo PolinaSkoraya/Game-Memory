@@ -9,23 +9,21 @@
 <div class="wrap">
     <div class="menu">
         <div class="cardsNumber">
-            <form action="#" id="num">
-                <div>Выберите количество карточек:</div>
-                <div>
-                    <input type="radio" name="cardsNumber" value="8" id="eight" checked>
-                    <label for="eight">8</label>
-                </div>
+            <div>Выберите количество карточек:</div>
+            <div>
+                <input type="radio" name="cardsNumber" value="8" id="eight" checked>
+                <label for="eight">8</label>
+            </div>
 
-                <div>
-                    <input type="radio" name="cardsNumber" value="12" id="twelve" >
-                    <label for="twelve">12</label>
-                </div>
+            <div>
+                <input type="radio" name="cardsNumber" value="12" id="twelve" >
+                <label for="twelve">12</label>
+            </div>
 
-                <div>
-                    <input type="radio" name="cardsNumber" value="16" id="sixteen">
-                    <label for="sixteen">16</label>
-                </div>
-            </form>
+            <div>
+                <input type="radio" name="cardsNumber" value="16" id="sixteen">
+                <label for="sixteen">16</label>
+            </div>
         </div>
 
         <div class="resetDiv">
@@ -42,6 +40,22 @@
                 <ol id="listHistory" class="add">
                 </ol>
             </div>
+        </div>
+
+        <div class="twoGamers">
+            <input type="checkbox" id="chbGamers">
+            <label for="chbGamers">2 игрока</label>
+            <div class="gamers">
+                <div class=" gamer firstGamer currentGamer">
+                    <p>игрок 1</p>
+                    <ol id="listHistoryFG"></ol>
+                </div>
+                <div class="gamer secondGamer">
+                    <p>игрок 2</p>
+                    <ol id="listHistorySG"></ol>
+                </div>
+            </div>
+
         </div>
     </div>
 
