@@ -4,7 +4,7 @@ let lengthCards = '8';
 let historyGame =[];
 let cardsOrder = [];
 let flippedCardsName = [];
-let numberOfClicks = 0;
+let numberOfClicks = 32;
 
 let historyFirstG = [];
 let historySecondG = [];
@@ -14,7 +14,7 @@ const addTo12  = document.querySelectorAll('.addTo12');
 const addTo16  = document.querySelectorAll('.addTo16');
 
 if(localStorage.getItem('historyGame') !== 'undefined' && localStorage.getItem('historyGame') !== null){
-    history = JSON.parse(localStorage.getItem('historyGame'));
+    historyGame = JSON.parse(localStorage.getItem('historyGame'));
     getHistory();
 }
 
@@ -66,40 +66,37 @@ const flipCard = e => {
         second = target;
 
         checkForMatch();
-        if(document.querySelector('#chbGamers').checked !== true){
+        if(document.querySelector('#chbGamers').checked !== true && numberOfClicks % 2 === 0){
             initHistory(historyGame);
-            getHistory();
+            localStorage.setItem('historyGame', JSON.stringify(historyGame));
+
+            let ol = document.querySelector('#listHistory');
+            getHistory(historyGame, ol);
         }
     }
 
     if(document.querySelector('#chbGamers').checked){
+        let double = firstCard === secondCard;
         numberOfClicks++;
-        if(numberOfClicks % 2 === 0){
+        if(numberOfClicks % 2 === 0 && !double){
             changeGamer();
-            //initHistory
-            let pair = new Pair();
-            pair.firstCardHistory = first.dataset.name;
-            pair.secondCardHistory = second.dataset.name;
-            historyFirstG.push(pair);
-            localStorage.setItem('historyGamer1', JSON.stringify(history));
+        }
+
+        if(numberOfClicks % 4 === 0){
+            initHistory(historySecondG);
+            localStorage.setItem('historySecondG', JSON.stringify(historySecondG));
+            let ol = document.querySelector('#listHistorySG');
+            getHistory(historySecondG, ol);
 
         }else{
-            let pair = new Pair();
-            pair.firstCardHistory = first.dataset.name;
-            pair.secondCardHistory = second.dataset.name;
-            historySecondG.push(pair);
-            localStorage.setItem('historyGamer2', JSON.stringify(history));
-
-            let ol = document.querySelector('#listHistorySG');
-            while(ol.firstChild){
-                ol.removeChild(ol.firstChild);
+            if(numberOfClicks % 2 === 0){
+                initHistory(historyFirstG);
+                localStorage.setItem('historyFirstG', JSON.stringify(historyFirstG));
+                let ol = document.querySelector('#listHistoryFG');
+                getHistory(historyFirstG, ol);
             }
-            historySecondG.forEach(elem=>{
-                let li= document.createElement('li');
-                li.innerHTML = `${elem.firstCardHistory} - ${elem.secondCardHistory}`;
-                ol.append(li);
-            })
         }
+        if(double) numberOfClicks-=2;
     }
 }
 
@@ -108,7 +105,19 @@ function initHistory(history){
     pair.firstCardHistory = first.dataset.name;
     pair.secondCardHistory = second.dataset.name;
     history.push(pair);
-    localStorage.setItem(`${history}`, JSON.stringify(history));
+
+}
+
+function getHistory(history, ol){
+    //let ol = document.querySelector('#listHistory');
+    while(ol.firstChild){
+        ol.removeChild(ol.firstChild);
+    }
+    history.forEach(elem=>{
+        let li= document.createElement('li');
+        li.innerHTML = `${elem.firstCardHistory} - ${elem.secondCardHistory}`;
+        ol.append(li);
+    })
 }
 
 function checkForMatch() {
@@ -217,18 +226,6 @@ function reset(){
 
 document.querySelector('#reset').addEventListener('click', reset);
 
-function getHistory(){
-    let ol = document.querySelector('#listHistory');
-    while(ol.firstChild){
-        ol.removeChild(ol.firstChild);
-    }
-    historyGame.forEach(elem=>{
-        let li= document.createElement('li');
-        li.innerHTML = `${elem.firstCardHistory} - ${elem.secondCardHistory}`;
-        ol.append(li);
-    })
-
-}
 
 function clearHistory(){
     historyGame.length = 0;
