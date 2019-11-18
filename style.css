@@ -106,11 +106,13 @@
 }
 
 .divList{
+    background-color: #8e2736;
     margin-left: 18px;
 }
 
 .menu{
-    padding: 20px;
+    background-color: #142a40;
+    padding: 20px 0 0 20px;
 }
 
 .currentGamer{
@@ -124,11 +126,17 @@
 .gamer{
     width: 140px;
     padding: 10px 30px 10px 8px;
-    margin: 5px;
+    margin: 10px;
+    border-radius: 8px;
 }
 
 .gamer p{
+    display: inline;
     font-size: 14px;
+}
+
+.gamer ol{
+    margin-left: 15px;
 }
 
 .container {
@@ -137,20 +145,14 @@
     padding-left: 25px;
     margin-bottom: 11px;
     cursor: pointer;
-    /*-webkit-user-select: none;*/
-    /*-moz-user-select: none;*/
-    /*-ms-user-select: none;*/
-    /*user-select: none;*/
 }
 
-/* Hide the browser's default radio button */
 .container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
 
-/* Create a custom radio button */
 .checkmark {
     position: absolute;
     top: -1px;
@@ -179,7 +181,6 @@
     display: block;
 }
 
-/* Style the indicator (dot/circle) */
 .container .checkmark:after {
     top: 6px;
     left: 6px;
@@ -187,4 +188,9 @@
     height: 8px;
     border-radius: 50%;
     background: #fff;
+}
+
+
+.addVisibl{
+    visibility: hidden;
 }

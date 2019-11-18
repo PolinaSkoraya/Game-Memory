@@ -61,10 +61,15 @@ if(localStorage.getItem('cardsOrder') !== 'undefined' && localStorage.getItem('c
 if(localStorage.getItem('twoGamersMode') === 'true'){
     document.querySelector('#chbHistory').disabled = true;
     document.querySelector('#chbGamers').checked = 'checked';
+    document.querySelector('.twoGamers').classList.remove('addVisibl');
     if(localStorage.getItem('currentGamer') === '2'){
         changeGamer();
         numberOfClicks-=2;
     }
+    w1 = localStorage.getItem('wins1');
+    w2 = localStorage.getItem('wins2');
+    divWin1.innerHTML = `${w1}`;
+    divWin2.innerHTML = `${w2}`;
 }
 
 class Pair {
@@ -296,6 +301,8 @@ function checkEnd() {
 
         if(localStorage.getItem('twoGamersMode') === 'true'){
             historyFirstG.length > historySecondG.length ? w1++ : w2++;
+            localStorage.setItem('wins1', `${w1}`);
+            localStorage.setItem('wins2', `${w2}`);
             divWin1.innerHTML = `${w1}`;
             divWin2.innerHTML = `${w2}`;
             console.log(w1);
@@ -328,10 +335,12 @@ function changeGamer(){
 
 function twoGamers(){
     if(document.querySelector('#chbGamers').checked){
+        document.querySelector('.twoGamers').classList.remove('addVisibl');
         document.querySelector('#chbHistory').disabled = true;
         localStorage.setItem('twoGamersMode', 'true');
         reset();
     }else{
+        document.querySelector('.twoGamers').classList.add('addVisibl');
         document.querySelector('#chbHistory').disabled = false;
         localStorage.setItem('twoGamersMode', 'false');
         reset();
@@ -339,3 +348,14 @@ function twoGamers(){
 }
 
 document.querySelector('#chbGamers').addEventListener('change', twoGamers);
+
+function resetWins(){
+    w1 = 0;
+    w2 = 0;
+    localStorage.setItem('wins1', '0');
+    localStorage.setItem('wins2', '0');
+    divWin1.innerHTML = `${w1}`;
+    divWin2.innerHTML = `${w2}`;
+}
+
+document.querySelector('#resWins').addEventListener('click', resetWins);

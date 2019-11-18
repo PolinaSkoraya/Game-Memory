@@ -8,8 +8,15 @@
 <body>
 <div class="wrap">
     <div class="menu">
+        <div class="resetDiv">
+            <input type="button" id="reset" value="Reset">
+            <label for="reset">
+                <img src="img/reload.svg" alt="reset" class="icon">
+            </label>
+        </div>
+
         <div class="cardsNumber">
-            <div>Выберите количество карточек:</div>
+            <div>The number of cards:</div>
             <label class="container">
                 <input type="radio" name="cardsNumber" value="8" id="eight" checked>
                 <span class="checkmark"></span>
@@ -25,55 +32,36 @@
                 <span class="checkmark"></span>
                 16
             </label>
-<!--            <div>-->
-<!--                <input type="radio" name="cardsNumber" value="8" id="eight" checked>-->
-<!--                <label for="eight">8</label>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <input type="radio" name="cardsNumber" value="12" id="twelve" >-->
-<!--                <label for="twelve">12</label>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <input type="radio" name="cardsNumber" value="16" id="sixteen">-->
-<!--                <label for="sixteen">16</label>-->
-<!--            </div>-->
-        </div>
-
-        <div class="resetDiv">
-            <input type="button" id="reset" value="Начать заново">
-            <label for="reset">
-                <img src="img/reload.svg" alt="reset" class="icon">
-            </label>
         </div>
 
         <div class="history">
             <input type="checkbox" id="chbHistory" >
-            <label for="chbHistory">показывать историю</label>
+            <label for="chbHistory">Show history</label>
             <div class="divList">
                 <ol id="listHistory" class="add">
                 </ol>
             </div>
         </div>
 
-        <div class="twoGamers">
-            <input type="checkbox" id="chbGamers">
-            <label for="chbGamers">2 игрока</label>
+        <input type="checkbox" id="chbGamers">
+        <label for="chbGamers">Two gamers</label>
+
+        <div class="twoGamers addVisibl">
             <div class="gamers add">
                 <div class="gamer firstGamer currentGamer">
-                    <div>Игрок 1</div>
-                    <p>Выигранные раунды: </p>
+                    <h4>Gamer 1</h4>
+                    <p>Wins: </p>
                     <p id="win1">0</p>
                     <ol id="listHistoryFG"></ol>
                 </div>
                 <div class="gamer secondGamer">
-                    <div>Игрок 2</div>
-                    <p>Выигранные раунды: </p>
+                    <h4>Gamer 2</h4>
+                    <p>Wins: </p>
                     <p id="win2">0</p>
                     <ol id="listHistorySG"></ol>
                 </div>
-                <input type="button">
             </div>
-
+            <input type="button" id='resWins' value="Reset wins">
         </div>
     </div>
 
