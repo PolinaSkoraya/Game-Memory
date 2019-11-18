@@ -16,6 +16,11 @@ const addTo16  = document.querySelectorAll('.addTo16');
 const firstGamer = document.querySelector('.firstGamer');
 const secondGamer = document.querySelector('.secondGamer');
 
+const divWin1 = document.querySelector('#win1');
+const divWin2 = document.querySelector('#win2');
+let w1 = 0;
+let w2 = 0;
+
 if(localStorage.getItem('historyGame') !== 'undefined' && localStorage.getItem('historyGame') !== null){
     historyGame = JSON.parse(localStorage.getItem('historyGame'));
     let ol = document.querySelector('#listHistory');
@@ -54,6 +59,7 @@ if(localStorage.getItem('cardsOrder') !== 'undefined' && localStorage.getItem('c
 }
 
 if(localStorage.getItem('twoGamersMode') === 'true'){
+    document.querySelector('#chbHistory').disabled = true;
     document.querySelector('#chbGamers').checked = 'checked';
     if(localStorage.getItem('currentGamer') === '2'){
         changeGamer();
@@ -249,10 +255,12 @@ function reset(){
     if(secondGamer.classList.contains('currentGamer')){
         changeGamer();
     }
+
+    divWin1.innerHTML = `${w1}`;
+    divWin2.innerHTML = `${w2}`;
 }
 
 document.querySelector('#reset').addEventListener('click', reset);
-
 
 function clearHistory(){
     historyGame.length = 0;
@@ -275,13 +283,24 @@ function clearHistory(){
 
 const showDivHistory = () => {
     let ol = document.querySelector('#listHistory');
-    ol.classList.toggle('add');
+    document.querySelector('#chbHistory').checked ? ol.classList.remove('add') : ol.classList.add('add');
 }
 
 document.querySelector('#chbHistory').addEventListener('change', showDivHistory);
 
+
+
 function checkEnd() {
     if(flippedCardsName.length * 2 === Number(lengthCards)) {
+        console.log('hi');
+
+        if(localStorage.getItem('twoGamersMode') === 'true'){
+            historyFirstG.length > historySecondG.length ? w1++ : w2++;
+            divWin1.innerHTML = `${w1}`;
+            divWin2.innerHTML = `${w2}`;
+            console.log(w1);
+            console.log(w2);
+        }
         setTimeout(()=>{
             reset()
         }, 1500);
@@ -300,16 +319,20 @@ if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getI
 }
 
 function changeGamer(){
-    firstGamer.classList.toggle('currentGamer');
-    secondGamer.classList.toggle('currentGamer');
-    firstGamer.classList.contains('currentGamer')? localStorage.setItem('currentGamer', '1'):localStorage.setItem('currentGamer', '2');
+
+        firstGamer.classList.toggle('currentGamer');
+        secondGamer.classList.toggle('currentGamer');
+        firstGamer.classList.contains('currentGamer')? localStorage.setItem('currentGamer', '1'):localStorage.setItem('currentGamer', '2')
+
 }
 
 function twoGamers(){
     if(document.querySelector('#chbGamers').checked){
+        document.querySelector('#chbHistory').disabled = true;
         localStorage.setItem('twoGamersMode', 'true');
         reset();
     }else{
+        document.querySelector('#chbHistory').disabled = false;
         localStorage.setItem('twoGamersMode', 'false');
         reset();
     }

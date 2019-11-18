@@ -10,20 +10,33 @@
     <div class="menu">
         <div class="cardsNumber">
             <div>Выберите количество карточек:</div>
-            <div>
+            <label class="container">
                 <input type="radio" name="cardsNumber" value="8" id="eight" checked>
-                <label for="eight">8</label>
-            </div>
-
-            <div>
-                <input type="radio" name="cardsNumber" value="12" id="twelve" >
-                <label for="twelve">12</label>
-            </div>
-
-            <div>
+                <span class="checkmark"></span>
+                8
+            </label>
+            <label class="container">
+                <input type="radio" name="cardsNumber" value="12" id="twelve">
+                <span class="checkmark"></span>
+                12
+            </label>
+            <label class="container">
                 <input type="radio" name="cardsNumber" value="16" id="sixteen">
-                <label for="sixteen">16</label>
-            </div>
+                <span class="checkmark"></span>
+                16
+            </label>
+<!--            <div>-->
+<!--                <input type="radio" name="cardsNumber" value="8" id="eight" checked>-->
+<!--                <label for="eight">8</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="radio" name="cardsNumber" value="12" id="twelve" >-->
+<!--                <label for="twelve">12</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <input type="radio" name="cardsNumber" value="16" id="sixteen">-->
+<!--                <label for="sixteen">16</label>-->
+<!--            </div>-->
         </div>
 
         <div class="resetDiv">
@@ -34,7 +47,7 @@
         </div>
 
         <div class="history">
-            <input type="checkbox" id="chbHistory">
+            <input type="checkbox" id="chbHistory" >
             <label for="chbHistory">показывать историю</label>
             <div class="divList">
                 <ol id="listHistory" class="add">
@@ -46,14 +59,19 @@
             <input type="checkbox" id="chbGamers">
             <label for="chbGamers">2 игрока</label>
             <div class="gamers add">
-                <div class=" gamer firstGamer currentGamer">
-                    <p>игрок 1</p>
+                <div class="gamer firstGamer currentGamer">
+                    <div>Игрок 1</div>
+                    <p>Выигранные раунды: </p>
+                    <p id="win1">0</p>
                     <ol id="listHistoryFG"></ol>
                 </div>
-                <div class="gamer secondGamer " >
-                    <p>игрок 2</p>
+                <div class="gamer secondGamer">
+                    <div>Игрок 2</div>
+                    <p>Выигранные раунды: </p>
+                    <p id="win2">0</p>
                     <ol id="listHistorySG"></ol>
                 </div>
+                <input type="button">
             </div>
 
         </div>
