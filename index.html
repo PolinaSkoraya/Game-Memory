@@ -7,137 +7,147 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="menu">
-        <div class="resetDiv">
-            <input type="button" id="reset" value="Reset">
-            <label for="reset">
-                <img src="img/reload.svg" alt="reset" class="icon">
-            </label>
+    <header class="header">
+        <div class="name">
+            GAME MEMORY
         </div>
+    </header>
+    <div class="body">
+        <div class="menu">
+            <div class="menu-name">
+                Settings
+            </div>
+            <div class="cardsNumber">
+                <div class="cardsNumber-text">The number of cards:</div>
+                <label class="container">
+                    <input type="radio" name="cardsNumber" value="8" id="eight" checked>
+                    <span class="checkmark"></span>
+                    8
+                </label>
+                <label class="container">
+                    <input type="radio" name="cardsNumber" value="12" id="twelve">
+                    <span class="checkmark"></span>
+                    12
+                </label>
+                <label class="container">
+                    <input type="radio" name="cardsNumber" value="16" id="sixteen">
+                    <span class="checkmark"></span>
+                    16
+                </label>
+            </div>
 
-        <div class="cardsNumber">
-            <div>The number of cards:</div>
-            <label class="container">
-                <input type="radio" name="cardsNumber" value="8" id="eight" checked>
-                <span class="checkmark"></span>
-                8
-            </label>
-            <label class="container">
-                <input type="radio" name="cardsNumber" value="12" id="twelve">
-                <span class="checkmark"></span>
-                12
-            </label>
-            <label class="container">
-                <input type="radio" name="cardsNumber" value="16" id="sixteen">
-                <span class="checkmark"></span>
-                16
-            </label>
-        </div>
+            <div class="history">
+                <input type="checkbox" id="chbHistory" >
+                <label for="chbHistory">Show history</label>
+                <div class="divList">
+                    <ol id="listHistory" class="add">
+                    </ol>
+                </div>
+            </div>
 
-        <div class="history">
-            <input type="checkbox" id="chbHistory" >
-            <label for="chbHistory">Show history</label>
-            <div class="divList">
-                <ol id="listHistory" class="add">
-                </ol>
+            <input type="checkbox" id="chbGamers">
+            <label for="chbGamers">Two gamers</label>
+
+            <div class="twoGamers addVisibl">
+                <div class="gamers add">
+                    <div class="gamer firstGamer currentGamer">
+                        <h4>Gamer 1</h4>
+                        <p>Wins: </p>
+                        <p id="win1">0</p>
+                        <ol id="listHistoryFG"></ol>
+                    </div>
+                    <div class="gamer secondGamer">
+                        <h4>Gamer 2</h4>
+                        <p>Wins: </p>
+                        <p id="win2">0</p>
+                        <ol id="listHistorySG"></ol>
+                    </div>
+                </div>
+                <input type="button" id='resWins' value="Reset wins">
             </div>
         </div>
 
-        <input type="checkbox" id="chbGamers">
-        <label for="chbGamers">Two gamers</label>
-
-        <div class="twoGamers addVisibl">
-            <div class="gamers add">
-                <div class="gamer firstGamer currentGamer">
-                    <h4>Gamer 1</h4>
-                    <p>Wins: </p>
-                    <p id="win1">0</p>
-                    <ol id="listHistoryFG"></ol>
-                </div>
-                <div class="gamer secondGamer">
-                    <h4>Gamer 2</h4>
-                    <p>Wins: </p>
-                    <p id="win2">0</p>
-                    <ol id="listHistorySG"></ol>
-                </div>
+        <section class="memory-game">
+            <div class="resetDiv">
+                <input type="button" id="reset" value="Reset">
+                <label for="reset">
+                    <img src="img/reload.svg" alt="reset" class="icon">
+                </label>
             </div>
-            <input type="button" id='resWins' value="Reset wins">
-        </div>
+
+            <div class="memory-card" data-name="asteroid">
+                <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card" data-name="asteroid">
+                <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card" data-name="astronaut">
+                <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card" data-name="astronaut">
+                <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card" data-name="earth">
+                <img class="front-face" src="img/earth.svg" alt="Earth" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card" data-name="earth">
+                <img class="front-face" src="img/earth.svg" alt="Earth" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card" data-name="moon">
+                <img class="front-face" src="img/moon.svg" alt="Moon" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card" data-name="moon">
+                <img class="front-face" src="img/moon.svg" alt="Moon" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card add addTo12" data-name="moon-rover">
+                <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card add addTo12" data-name="moon-rover">
+                <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card add addTo12" data-name="planet">
+                <img class="front-face" src="img/planet.svg" alt="Planet" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card add addTo12" data-name="planet">
+                <img class="front-face" src="img/planet.svg" alt="Planet" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card add addTo16" data-name="spaceship">
+                <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card add addTo16" data-name="spaceship" >
+                <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+
+            <div class="memory-card add addTo16" data-name="star">
+                <img class="front-face" src="img/star.svg" alt="Star" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+            <div class="memory-card add addTo16" data-name="star" >
+                <img class="front-face" src="img/star.svg" alt="Star" />
+                <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
+            </div>
+        </section>
     </div>
-
-    <section class="memory-game">
-        <div class="memory-card" data-name="asteroid">
-            <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card" data-name="asteroid">
-            <img class="front-face" src="img/asteroid.svg" alt="Asteroid" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card" data-name="astronaut">
-            <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card" data-name="astronaut">
-            <img class="front-face" src="img/astronaut.svg" alt="Astronaut" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card" data-name="earth">
-            <img class="front-face" src="img/earth.svg" alt="Earth" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card" data-name="earth">
-            <img class="front-face" src="img/earth.svg" alt="Earth" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card" data-name="moon">
-            <img class="front-face" src="img/moon.svg" alt="Moon" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card" data-name="moon">
-            <img class="front-face" src="img/moon.svg" alt="Moon" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card add addTo12" data-name="moon-rover">
-            <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card add addTo12" data-name="moon-rover">
-            <img class="front-face" src="img/moon-rover.svg" alt="Moon-rover" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card add addTo12" data-name="planet">
-            <img class="front-face" src="img/planet.svg" alt="Planet" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card add addTo12" data-name="planet">
-            <img class="front-face" src="img/planet.svg" alt="Planet" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card add addTo16" data-name="spaceship">
-            <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card add addTo16" data-name="spaceship" >
-            <img class="front-face" src="img/spaceship.svg" alt="Spaceship" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-
-        <div class="memory-card add addTo16" data-name="star">
-            <img class="front-face" src="img/star.svg" alt="Star" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-        <div class="memory-card add addTo16" data-name="star" >
-            <img class="front-face" src="img/star.svg" alt="Star" />
-            <img class="back-face" src="img/js-badge.svg" alt="JS Badge" />
-        </div>
-    </section>
 
 
 </div>

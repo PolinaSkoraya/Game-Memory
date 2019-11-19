@@ -6,44 +6,76 @@ let cardsOrder = [];
 let flippedCardsName = [];
 let numberOfClicks = 64;
 
-let historyFirstG = [];
-let historySecondG = [];
-
 const additional  = document.querySelectorAll('.add');
 const addTo12  = document.querySelectorAll('.addTo12');
 const addTo16  = document.querySelectorAll('.addTo16');
 
-const firstGamer = document.querySelector('.firstGamer');
-const secondGamer = document.querySelector('.secondGamer');
+class Gamer{
+    constructor(selectorDivGamer, selectorDivWinGamer){
+        this.history = [];
+        this.wins = 0;
+        this.divGamer = document.querySelector(selectorDivGamer);
+        this.divWin = document.querySelector(selectorDivWinGamer);
+    }
+    getDivGamer(){
+        return this.divGamer;
+    }
+    getGamerHistory(){
+        return this.history;
+    }
+    getDivWin(){
+        return this.divWin;
+    }
+    getWins(){
+        return this.wins;
+    }
+    resetGamerWins(){
+        this.wins = 0;
+        this.divWin.innerHTML = `${this.wins}`;
+    }
+    getLengthHist(){
+        return this.history.length;
+    }
+    incrementWins(){
+        this.wins++;
+    }
+    clearGamerHistory(){
+        this.history.length = 0;
+    }
+    getGamerData(){
+        return {
+            'history': this.history,
+            'wins': this.wins
+        }
+    }
+}
 
-const divWin1 = document.querySelector('#win1');
-const divWin2 = document.querySelector('#win2');
-let w1 = 0;
-let w2 = 0;
+let gamer1;
+let gamer2;
+
+class Pair {
+    constructor() {
+        this.firstCardHistory = '';
+        this.secondCardHistory = '';
+    }
+}
+
+let hasFlippedCard = false;
+let lockBoard = false;
+let firstCard, secondCard;
+let first, second;
 
 if(localStorage.getItem('historyGame') !== 'undefined' && localStorage.getItem('historyGame') !== null){
     historyGame = JSON.parse(localStorage.getItem('historyGame'));
     let ol = document.querySelector('#listHistory');
-    getHistory(historyGame, ol);
-}
-
-if(localStorage.getItem('historyFirstG') !== 'undefined' && localStorage.getItem('historyFirstG') !== null){
-    historyFirstG = JSON.parse(localStorage.getItem('historyFirstG'));
-    let ol = document.querySelector('#listHistoryFG');
-    getHistory(historyFirstG, ol);
-}
-
-if(localStorage.getItem('historySecondG') !== 'undefined' && localStorage.getItem('historySecondG') !== null){
-    historySecondG = JSON.parse(localStorage.getItem('historySecondG'));
-    let ol = document.querySelector('#listHistorySG');
-    getHistory(historySecondG, ol);
+    showHistory(historyGame, ol);
 }
 
 if(localStorage.getItem('numberOfCards') !== 'undefined' && localStorage.getItem('numberOfCards') !== null){
     lengthCards = Number(localStorage.getItem('numberOfCards'));
     addCards(localStorage.getItem('numberOfCards'));
     inputsNumberCards.forEach(elem=> {
-        if(elem.value == localStorage.getItem('numberOfCards')){
+        if(elem.value.toString() === localStorage.getItem('numberOfCards')){
             elem.checked = 'checked';
         }
     })
@@ -58,7 +90,37 @@ if(localStorage.getItem('cardsOrder') !== 'undefined' && localStorage.getItem('c
     shuffle();
 }
 
+if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getItem('flippedCardsName') !== null){
+    flippedCardsName = JSON.parse(localStorage.getItem('flippedCardsName'));
+    flippedCardsName.forEach(elem =>{
+        let flipped = document.querySelectorAll(`[data-name = ${elem}]`);
+        flipped.forEach(card=>{
+            card.removeEventListener('click', flipCard);
+            card.classList.add('flip');
+        })
+    })
+}
+
 if(localStorage.getItem('twoGamersMode') === 'true'){
+    if(localStorage.getItem('gamer1') !== 'undefined' && localStorage.getItem('gamer1') !== null){
+        let Gamer1Data = JSON.parse(localStorage.getItem('gamer1'));
+        gamer1 = new Gamer('.firstGamer','#win1');
+        gamer1.history = Gamer1Data.history;
+        gamer1.wins = Gamer1Data.wins;
+        let ol = document.querySelector('#listHistoryFG');
+        showHistory(gamer1.history, ol);
+        gamer1.getDivWin().innerHTML = `${gamer1.wins}`;
+    }
+    if(localStorage.getItem('gamer2') !== 'undefined' && localStorage.getItem('gamer2') !== null){
+        let Gamer2Data = JSON.parse(localStorage.getItem('gamer2'));
+        gamer2 = new Gamer('.secondGamer','#win2');
+        gamer2.history = Gamer2Data.history;
+        gamer2.wins = Gamer2Data.wins;
+        let ol = document.querySelector('#listHistorySG');
+        showHistory(gamer2.history, ol);
+        gamer2.getDivWin().innerHTML = `${gamer2.wins}`;
+    }
+
     document.querySelector('#chbHistory').disabled = true;
     document.querySelector('#chbGamers').checked = 'checked';
     document.querySelector('.twoGamers').classList.remove('addVisibl');
@@ -66,23 +128,7 @@ if(localStorage.getItem('twoGamersMode') === 'true'){
         changeGamer();
         numberOfClicks-=2;
     }
-    w1 = localStorage.getItem('wins1');
-    w2 = localStorage.getItem('wins2');
-    divWin1.innerHTML = `${w1}`;
-    divWin2.innerHTML = `${w2}`;
 }
-
-class Pair {
-    constructor() {
-        this.firstCardHistory = '';
-        this.secondCardHistory = '';
-    }
-}
-
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let first, second;
 
 const flipCard = e => {
     if (lockBoard) return;
@@ -95,42 +141,42 @@ const flipCard = e => {
         hasFlippedCard = true;
         firstCard = target;
         first = target;
-    }else{
+    } else {
         secondCard = target;
         second = target;
 
         checkForMatch();
-        if(document.querySelector('#chbGamers').checked !== true && numberOfClicks % 2 === 0){
+        if (document.querySelector('#chbGamers').checked !== true && numberOfClicks % 2 === 0) {
             initHistory(historyGame);
             localStorage.setItem('historyGame', JSON.stringify(historyGame));
 
             let ol = document.querySelector('#listHistory');
-            getHistory(historyGame, ol);
+            showHistory(historyGame, ol);
         }
     }
 
-    if(document.querySelector('#chbGamers').checked){
+    if (document.querySelector('#chbGamers').checked) {
         let double = firstCard === secondCard;
         numberOfClicks++;
-        if(numberOfClicks % 2 === 0 && !double){
+        if (numberOfClicks % 2 === 0 && !double) {
             changeGamer();
         }
 
-        if(numberOfClicks % 4 === 0){
-            initHistory(historySecondG);
-            localStorage.setItem('historySecondG', JSON.stringify(historySecondG));
+        if (numberOfClicks % 4 === 0) {
+            initHistory(gamer2.getGamerHistory());
             let ol = document.querySelector('#listHistorySG');
-            getHistory(historySecondG, ol);
+            showHistory(gamer2.getGamerHistory(), ol);
 
-        }else{
-            if(numberOfClicks % 2 === 0){
-                initHistory(historyFirstG);
-                localStorage.setItem('historyFirstG', JSON.stringify(historyFirstG));
+        } else {
+            if (numberOfClicks % 2 === 0) {
+                initHistory(gamer1.getGamerHistory());
                 let ol = document.querySelector('#listHistoryFG');
-                getHistory(historyFirstG, ol);
+                showHistory(gamer1.getGamerHistory(), ol);
             }
         }
-        if(double) numberOfClicks-=2;
+        if (double) numberOfClicks -= 2;
+        localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData()));
+        localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData()));
     }
 }
 
@@ -139,11 +185,9 @@ function initHistory(history){
     pair.firstCardHistory = first.dataset.name;
     pair.secondCardHistory = second.dataset.name;
     history.push(pair);
-
 }
 
-function getHistory(history, ol){
-    //let ol = document.querySelector('#listHistory');
+function showHistory(history, ol){
     while(ol.firstChild){
         ol.removeChild(ol.firstChild);
     }
@@ -176,7 +220,6 @@ function unflipCards() {
     setTimeout(() => {
         firstCard.classList.remove('flip');
         secondCard.classList.remove('flip');
-
         resetBoard();
     }, 1500);
 }
@@ -194,8 +237,6 @@ function shuffle() {
     }
     localStorage.setItem('cardsOrder', JSON.stringify(cardsOrder));
 };
-
-
 
 cards.forEach(card => card.addEventListener('click', flipCard));
 
@@ -237,32 +278,25 @@ inputsNumberCards.forEach(input => input.addEventListener('change', changeNumber
 function reset(){
     cardsOrder.length = 0;
     localStorage.setItem('cardsOrder', undefined);
-
     const fliped = document.querySelectorAll('.flip');
     fliped.forEach(elem => elem.classList.remove('flip'));
-
     resetBoard();
-
     cards.forEach(card => card.addEventListener('click', flipCard));
     setTimeout(shuffle, 500);
-
     clearHistory();
-
     localStorage.setItem('historyGame', undefined);
-    localStorage.setItem('historyFirstG', undefined);
-    localStorage.setItem('historySecondG', undefined);
-
     flippedCardsName.length = 0;
     localStorage.setItem('flippedCardsName', undefined);
-
     numberOfClicks = 0;
-    //const secondGamer = document.querySelector('.secondGamer');
-    if(secondGamer.classList.contains('currentGamer')){
-        changeGamer();
-    }
 
-    divWin1.innerHTML = `${w1}`;
-    divWin2.innerHTML = `${w2}`;
+    if(localStorage.getItem('twoGamersMode') === 'true'){
+        if(gamer2.getDivGamer().classList.contains('currentGamer')) {
+            changeGamer();
+        }
+
+        localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData()));
+        localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData()));
+    }
 }
 
 document.querySelector('#reset').addEventListener('click', reset);
@@ -274,15 +308,17 @@ function clearHistory(){
         ol.removeChild(ol.firstChild);
     }
 
-    historyFirstG.length = 0;
-    let ol1 = document.querySelector('#listHistoryFG');
-    while(ol1.firstChild){
-        ol1.removeChild(ol1.firstChild);
-    }
-    historySecondG.length = 0;
-    let ol2 = document.querySelector('#listHistorySG');
-    while(ol2.firstChild){
-        ol2.removeChild(ol2.firstChild);
+    if(localStorage.getItem('twoGamersMode') === 'true'){
+        gamer1.clearGamerHistory(); //historyFirstG.length = 0;
+        gamer2.clearGamerHistory(); //historySecondG.length = 0;
+        let ol1 = document.querySelector('#listHistoryFG');
+        while(ol1.firstChild){
+            ol1.removeChild(ol1.firstChild);
+        }
+        let ol2 = document.querySelector('#listHistorySG');
+        while(ol2.firstChild){
+            ol2.removeChild(ol2.firstChild);
+        }
     }
 }
 
@@ -293,20 +329,14 @@ const showDivHistory = () => {
 
 document.querySelector('#chbHistory').addEventListener('change', showDivHistory);
 
-
-
 function checkEnd() {
     if(flippedCardsName.length * 2 === Number(lengthCards)) {
-        console.log('hi');
-
         if(localStorage.getItem('twoGamersMode') === 'true'){
-            historyFirstG.length > historySecondG.length ? w1++ : w2++;
-            localStorage.setItem('wins1', `${w1}`);
-            localStorage.setItem('wins2', `${w2}`);
-            divWin1.innerHTML = `${w1}`;
-            divWin2.innerHTML = `${w2}`;
-            console.log(w1);
-            console.log(w2);
+            gamer1.getLengthHist() > gamer2.getLengthHist() ? gamer1.incrementWins() : gamer2.incrementWins();
+            localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData())); // localStorage.setItem('wins1', `${w1}`);
+            localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData())); // localStorage.setItem('wins2', `${w2}`);
+            gamer1.getDivWin().innerHTML = `${gamer1.getWins()}`;
+            gamer2.getDivWin().innerHTML = `${gamer2.getWins()}`;
         }
         setTimeout(()=>{
             reset()
@@ -314,30 +344,18 @@ function checkEnd() {
     }
 }
 
-if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getItem('flippedCardsName') !== null){
-    flippedCardsName = JSON.parse(localStorage.getItem('flippedCardsName'));
-    flippedCardsName.forEach(elem =>{
-        let flipped = document.querySelectorAll(`[data-name = ${elem}]`);
-        flipped.forEach(card=>{
-            card.removeEventListener('click', flipCard);
-            card.classList.add('flip');
-        })
-    })
-}
-
 function changeGamer(){
-
-        firstGamer.classList.toggle('currentGamer');
-        secondGamer.classList.toggle('currentGamer');
-        firstGamer.classList.contains('currentGamer')? localStorage.setItem('currentGamer', '1'):localStorage.setItem('currentGamer', '2')
-
+    gamer1.getDivGamer().classList.toggle('currentGamer');
+    gamer2.getDivGamer().classList.toggle('currentGamer');
+    gamer1.getDivGamer().classList.contains('currentGamer')? localStorage.setItem('currentGamer', '1'):localStorage.setItem('currentGamer', '2')
 }
-
 function twoGamers(){
     if(document.querySelector('#chbGamers').checked){
         document.querySelector('.twoGamers').classList.remove('addVisibl');
         document.querySelector('#chbHistory').disabled = true;
         localStorage.setItem('twoGamersMode', 'true');
+        gamer1 = new Gamer('.firstGamer','#win1');
+        gamer2 = new Gamer('.secondGamer','#win2');
         reset();
     }else{
         document.querySelector('.twoGamers').classList.add('addVisibl');
@@ -346,16 +364,12 @@ function twoGamers(){
         reset();
     }
 }
-
-document.querySelector('#chbGamers').addEventListener('change', twoGamers);
-
 function resetWins(){
-    w1 = 0;
-    w2 = 0;
-    localStorage.setItem('wins1', '0');
-    localStorage.setItem('wins2', '0');
-    divWin1.innerHTML = `${w1}`;
-    divWin2.innerHTML = `${w2}`;
+    gamer1.resetGamerWins();
+    gamer2.resetGamerWins();
+    localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData()));
+    localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData()));
 }
 
+document.querySelector('#chbGamers').addEventListener('change', twoGamers);
 document.querySelector('#resWins').addEventListener('click', resetWins);
