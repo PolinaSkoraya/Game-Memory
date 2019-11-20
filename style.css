@@ -206,6 +206,7 @@
 .header{
     background-color: #1a2e4c;
     box-shadow: 2px 3px 7px 2px #19103e;
+    padding: 10px 0;
     margin-bottom: 10px;
 }
 
@@ -236,7 +237,7 @@ li{
 
 #resWins{
     background-color: #1a2e4c;
-    border: 2px solid rgba(120, 33, 46, 0.85);
+    border: 2px solid #64646e;
     border-radius: 5px;
     color: white;
     padding: 10px 10px;

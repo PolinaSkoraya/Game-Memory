@@ -14,6 +14,7 @@ class Gamer{
     constructor(selectorDivGamer, selectorDivWinGamer){
         this.history = [];
         this.wins = 0;
+        this.doubles = 0;
         this.divGamer = document.querySelector(selectorDivGamer);
         this.divWin = document.querySelector(selectorDivWinGamer);
     }
@@ -41,15 +42,20 @@ class Gamer{
     }
     clearGamerHistory(){
         this.history.length = 0;
+        this.doubles = 0;
     }
     getGamerData(){
         return {
             'history': this.history,
-            'wins': this.wins
+            'wins': this.wins,
+            'doubles': this.doubles
         }
     }
-    showWins(){
-
+    incrementDoubles(){
+        this.doubles++;
+    }
+    getDoubles(){
+        return this.doubles;
     }
 }
 
@@ -99,6 +105,7 @@ if(localStorage.getItem('twoGamersMode') === 'true'){
         gamer1 = new Gamer('.firstGamer','#win1');
         gamer1.history = Gamer1Data.history;
         gamer1.wins = Gamer1Data.wins;
+        gamer1.doubles = Gamer1Data.doubles;
         let ol = document.querySelector('#listHistoryFG');
         showHistory(gamer1.history, ol);
         gamer1.getDivWin().innerHTML = `${gamer1.wins}`;
@@ -108,6 +115,7 @@ if(localStorage.getItem('twoGamersMode') === 'true'){
         gamer2 = new Gamer('.secondGamer','#win2');
         gamer2.history = Gamer2Data.history;
         gamer2.wins = Gamer2Data.wins;
+        gamer2.doubles = Gamer2Data.doubles;
         let ol = document.querySelector('#listHistorySG');
         showHistory(gamer2.history, ol);
         gamer2.getDivWin().innerHTML = `${gamer2.wins}`;
@@ -138,7 +146,7 @@ const flipCard = e => {
         second = target;
 
         checkForMatch();
-        if (document.querySelector('#chbGamers').checked !== true && numberOfClicks % 2 === 0) {
+        if (document.querySelector('#chbGamers').checked !== true ) { //&& numberOfClicks % 2 === 0
             initHistory(historyGame);
             localStorage.setItem('historyGame', JSON.stringify(historyGame));
 
@@ -166,7 +174,9 @@ const flipCard = e => {
                 showHistory(gamer1.getGamerHistory(), ol);
             }
         }
-        if (double) numberOfClicks -= 2;
+        if (double) {
+            numberOfClicks -= 2;
+        }
         localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData()));
         localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData()));
     }
@@ -196,6 +206,11 @@ function checkForMatch() {
 }
 
 function disableCards() {
+    if(localStorage.getItem('twoGamersMode') === 'true'){
+        let currG = localStorage.getItem('currentGamer');
+        currG === '1' ? gamer1.incrementDoubles() : gamer2.incrementDoubles();
+    }
+
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
 
@@ -287,7 +302,6 @@ function reset(){
         if(gamer2.getDivGamer().classList.contains('currentGamer')) {
             changeGamer();
         }
-
         localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData()));
         localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData()));
     }
@@ -326,7 +340,9 @@ document.querySelector('#chbHistory').addEventListener('change', showDivHistory)
 function checkEnd() {
     if(flippedCardsName.length * 2 === Number(lengthCards)) {
         if(localStorage.getItem('twoGamersMode') === 'true'){
-            gamer1.getLengthHist() > gamer2.getLengthHist() ? gamer1.incrementWins() : gamer2.incrementWins();
+            if(gamer1.getDoubles() !== gamer2.getDoubles()){
+                gamer1.getDoubles() > gamer2.getDoubles() ? gamer1.incrementWins() : gamer2.incrementWins();
+            }
             localStorage.setItem('gamer1', JSON.stringify(gamer1.getGamerData())); // localStorage.setItem('wins1', `${w1}`);
             localStorage.setItem('gamer2', JSON.stringify(gamer2.getGamerData())); // localStorage.setItem('wins2', `${w2}`);
             gamer1.getDivWin().innerHTML = `${gamer1.getWins()}`;
@@ -344,6 +360,7 @@ function changeGamer(){
     gamer1.getDivGamer().classList.contains('currentGamer')? localStorage.setItem('currentGamer', '1'):localStorage.setItem('currentGamer', '2')
 }
 function twoGamers(){
+    localStorage.setItem('currentGamer', '1');
     if(document.querySelector('#chbGamers').checked){
         document.querySelector('.twoGamers').classList.remove('addVisibl');
         document.querySelector('#chbHistory').disabled = true;
