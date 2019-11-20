@@ -115,8 +115,9 @@
 }
 
 .menu{
-    background-color: #142a40;
-    /*box-shadow: 0px 0px 12px 1px #111f33;*/
+    background-color: #14233a;
+    box-shadow: 0px 0px 2px 2px #0b1c28;
+
     padding: 20px 0 0 30px;
     border-radius: 15px;
     margin: 20px 0 0 20px;
@@ -203,7 +204,9 @@
 }
 
 .header{
-    background-color: #1a3755;
+    background-color: #1a2e4c;
+    box-shadow: 2px 3px 7px 2px #19103e;
+    margin-bottom: 10px;
 }
 
 .name h1{
@@ -220,6 +223,7 @@
 }
 .menu-name{
     font-size: 25px;
+    font-weight: 500;
 }
 
 li{
@@ -228,4 +232,93 @@ li{
 }
 .addCards{
     display: none;
+}
+
+#resWins{
+    background-color: #1a2e4c;
+    border: 2px solid rgba(120, 33, 46, 0.85);
+    border-radius: 5px;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 10px;
+    outline: none;
+}
+#resWins:hover{
+    background-color: rgb(120, 33, 46);
+    cursor: pointer;
+
+}
+#resWins:active{
+    background-color: #8e2736;
+}
+
+.container-chb {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container-chb input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark-chb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container-chb:hover input ~ .checkmark-chb {
+    background-color: #57aabe;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container-chb input:checked ~ .checkmark-chb {
+    background-color: #78212e;
+}
+
+.checkmark-chb:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.container-chb input:checked ~ .checkmark-chb:after {
+    display: block;
+}
+
+.container-chb .checkmark-chb:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.container-chb{
+    font-size: 16px;
+}
+
+.container-chb input:disabled ~ .checkmark-chb {
+    background-color: #64646e;
 }
