@@ -6,7 +6,7 @@ let cardsOrder = [];
 let flippedCardsName = [];
 let numberOfClicks = 64;
 
-const additional  = document.querySelectorAll('.add');
+const additional  = document.querySelectorAll('.addCards');
 const addTo12  = document.querySelectorAll('.addTo12');
 const addTo16  = document.querySelectorAll('.addTo16');
 
@@ -48,6 +48,9 @@ class Gamer{
             'wins': this.wins
         }
     }
+    showWins(){
+
+    }
 }
 
 let gamer1;
@@ -88,17 +91,6 @@ if(localStorage.getItem('cardsOrder') !== 'undefined' && localStorage.getItem('c
     }
 }else{
     shuffle();
-}
-
-if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getItem('flippedCardsName') !== null){
-    flippedCardsName = JSON.parse(localStorage.getItem('flippedCardsName'));
-    flippedCardsName.forEach(elem =>{
-        let flipped = document.querySelectorAll(`[data-name = ${elem}]`);
-        flipped.forEach(card=>{
-            card.removeEventListener('click', flipCard);
-            card.classList.add('flip');
-        })
-    })
 }
 
 if(localStorage.getItem('twoGamersMode') === 'true'){
@@ -243,24 +235,24 @@ cards.forEach(card => card.addEventListener('click', flipCard));
 function addCards(value){
     if(value === '8'){
         additional.forEach( elem => {
-            elem.classList.add('add');
-            elem.classList.add('add');
+            elem.classList.add('addCards');
+            //elem.classList.add('add');
         })
     }
     else if(value === '12'){
         addTo12.forEach( elem => {
-            elem.classList.remove('add');
-            elem.classList.remove('add');
+            elem.classList.remove('addCards');
+            //elem.classList.remove('add');
         })
         addTo16.forEach( elem => {
-            elem.classList.add('add');
-            elem.classList.add('add');
+            elem.classList.add('addCards');
+           //elem.classList.add('add');
         })
     }
     else if(value === '16'){
         additional.forEach( elem => {
-            elem.classList.remove('add');
-            elem.classList.remove('add');
+            elem.classList.remove('addCards');
+           //elem.classList.remove('add');
         })
     }
 }
@@ -373,3 +365,14 @@ function resetWins(){
 
 document.querySelector('#chbGamers').addEventListener('change', twoGamers);
 document.querySelector('#resWins').addEventListener('click', resetWins);
+
+if(localStorage.getItem('flippedCardsName') !== 'undefined' && localStorage.getItem('flippedCardsName') !== null){
+    flippedCardsName = JSON.parse(localStorage.getItem('flippedCardsName'));
+    flippedCardsName.forEach(elem =>{
+        let flipped = document.querySelectorAll(`[data-name = ${elem}]`);
+        flipped.forEach(card=>{
+            card.removeEventListener('click', flipCard);
+            card.classList.add('flip');
+        })
+    })
+}

@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .wrap {
@@ -106,7 +107,6 @@
 }
 
 .history{
-    color: #bfbfbd;
     margin-bottom: 20px;
 }
 
@@ -206,9 +206,10 @@
     background-color: #1a3755;
 }
 
-.name{
+.name h1{
     font-size: 60px;
     text-align: center;
+    font-weight: 500;
 }
 
 .body{
@@ -219,4 +220,12 @@
 }
 .menu-name{
     font-size: 25px;
+}
+
+li{
+    font-size: 14px;
+    color: #bfbfbd;
+}
+.addCards{
+    display: none;
 }
