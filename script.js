@@ -210,8 +210,10 @@ function unflipCards() {
     lockBoard = true;
 
     setTimeout(() => {
-        firstCard.classList.remove('flip');
-        secondCard.classList.remove('flip');
+        if(firstCard !== null && secondCard !==null){
+            firstCard.classList.remove('flip');
+            secondCard.classList.remove('flip');
+        }
         resetBoard();
     }, 1500);
 }
